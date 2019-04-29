@@ -2,6 +2,7 @@ import express, { ErrorRequestHandler, Request, Response, NextFunction } from 'e
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import firebase from 'firebase';
+import cookieParser from 'cookie-parser';
 
 import { environments as ENV } from '@env/environments';
 import authRoutes from '@modules/auth/routes';
@@ -28,6 +29,8 @@ export default class Server {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
 
+    this.app.use(cookieParser());
+
     this.app.use(cors({ origin: true, credentials: true }));
     this.configFirebase();
   }
@@ -51,7 +54,6 @@ export default class Server {
 
   private handle500(): void {
     this.app.use(function(error: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) {
-      console.log(error);
       res.status(500);
       res.json(error);
     });
