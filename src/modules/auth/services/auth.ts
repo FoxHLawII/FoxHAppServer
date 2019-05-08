@@ -5,9 +5,12 @@ import { User } from '../entities/user';
 import { Session } from '../entities/session';
 import sessionStore from './session-store';
 
-export const registerWithEmailAndPassword = (email: string, password: string): Promise<Session> => {
+export const registerWithEmailAndPassword = (name: string, email: string, password: string): Promise<Session> => {
   return firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(user => generateSession(user));
+    .then(user => {
+      user.user.updateProfile({ displayName: name });
+      return generateSession(user)
+    });
 }
 
 export const loginWithEmailAndPassword = (email: string, password: string): Promise<Session> => {

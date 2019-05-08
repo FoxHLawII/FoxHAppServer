@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import firebase from 'firebase';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 import { environments as ENV } from '@env/environments';
 import authRoutes from '@modules/auth/routes';
@@ -30,6 +31,7 @@ export default class Server {
     this.app.use(bodyParser.json());
 
     this.app.use(cookieParser());
+    this.app.use(morgan('tiny'));
 
     this.app.use(cors({ origin: true, credentials: true }));
     this.configFirebase();
